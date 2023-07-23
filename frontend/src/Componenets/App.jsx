@@ -1,18 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import Chat from "./Chat";
 import Login from "./Login";
 import Navbar from "./Navbar";
-import Register from "./Register";
+import Signup from "./Signup";
 
 function App() {
+  const [messages, setMessages] = useState([
+    {
+      role: "assistant",
+      content: "Hey there! How can I help you today?",
+    },
+  ]);
+
+  const [email, setEmail] = useState("");
   return (
     <div>
+      <Navbar setMessages={setMessages} />
       <Routes>
-        <Route pata="/" element={<Chat />}></Route>
-        <Route pata="/login" element={<Login />}></Route>
-        <Route pata="/register" element={<Register />}></Route>
-        <Route pata="/navbar" element={<Navbar />}></Route>
+        <Route
+          path="/"
+          element={
+            <Chat messages={messages} setMessages={setMessages} email={email} />
+          }
+        ></Route>
+        <Route
+          path="/login"
+          element={<Login email={email} setEmail={setEmail} />}
+        ></Route>
+        <Route
+          path="/signup"
+          element={<Signup email={email} setEmail={setEmail} />}
+        ></Route>
       </Routes>
     </div>
   );

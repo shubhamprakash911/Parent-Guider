@@ -1,17 +1,13 @@
 import React, { useState, useRef } from "react";
 import "../index.css";
 
-function Chat() {
-  const [messages, setMessages] = useState([
-    {
-      role: "assistant",
-      content: "how can i help you !",
-    },
-  ]);
+function Chat({ messages, setMessages }) {
+  // console.log(messages, setMessages);
   const [loading, setLoading] = useState(false);
   const inputRef = useRef(null);
 
-  const handleSendMessage = async () => {
+  const handleSendMessage = async (e) => {
+    e.preventDefault();
     const inputText = inputRef.current.value;
     if (inputText.trim() === "") return;
 
@@ -22,15 +18,23 @@ function Chat() {
     ]);
 
     try {
+      const email = localStorage.getItem("email");
+      let splice_data = messages.slice(1);
+      const chat_history = [
+        ...splice_data,
+        { role: "user", content: inputText },
+      ];
       const response = await fetch("http://localhost:5000/gpt4", {
         method: "POST",
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
         },
-        body: new URLSearchParams({ user_input: inputText }),
+        body: JSON.stringify({ user_input: chat_history, email }),
       });
       const data = await response.json();
-      console.log(data);
+      console.log(chat_history);
+      if (data.message) alert(data.message);
 
       setMessages((prevMessages) => [
         ...prevMessages,
@@ -38,7 +42,7 @@ function Chat() {
       ]);
     } catch (error) {
       console.error("Error:", error);
-      // Handle error if needed
+      alert(error);
     } finally {
       setLoading(false);
       // Clear the input field
@@ -62,14 +66,14 @@ function Chat() {
           ))}
         </div>
         {loading && <div>Loading...</div>}
-        <div className="user-input">
+        <form onSubmit={(e) => handleSendMessage(e)} className="user-input">
           <input
             type="text"
             ref={inputRef}
             placeholder="Type your message..."
           />
-          <button onClick={handleSendMessage}>Send</button>
-        </div>
+          <button>Send</button>
+        </form>
       </div>
     </div>
   );
