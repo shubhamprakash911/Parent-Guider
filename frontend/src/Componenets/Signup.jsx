@@ -14,10 +14,12 @@ const Signup = ({ email, setEmail }) => {
       password: password,
     };
 
-    axios.post("http://localhost:5000/register", userDetails).then((res) => {
-      alert(res.data.message);
-      localStorage.setItem("token", res.data.token);
-    });
+    axios
+      .post("https://parent-guider-backend.onrender.com/register", userDetails)
+      .then((res) => {
+        alert(res.data.message);
+        localStorage.setItem("token", res.data.token);
+      });
     console.log("Signup data:", { email, password });
   };
 

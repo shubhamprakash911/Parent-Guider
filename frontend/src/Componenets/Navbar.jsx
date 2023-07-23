@@ -6,13 +6,16 @@ function Navbar({ setMessages }) {
   const [token, setToken] = useState(localStorage.getItem("token"));
 
   async function handleHistory() {
-    const response = await fetch("http://localhost:5000/history", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email: localStorage.getItem("email") }),
-    });
+    const response = await fetch(
+      "https://parent-guider-backend.onrender.com/history",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: localStorage.getItem("email") }),
+      }
+    );
 
     let history_data = await response.json();
     console.log(history_data);

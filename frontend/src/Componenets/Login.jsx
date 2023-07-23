@@ -14,11 +14,13 @@ const Login = ({ email, setEmail }) => {
       password: password,
     };
 
-    axios.post("http://localhost:5000/login", userDetails).then((res) => {
-      alert(res.data.message);
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("email", res.data.email);
-    });
+    axios
+      .post("https://parent-guider-backend.onrender.com/login", userDetails)
+      .then((res) => {
+        alert(res.data.message);
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("email", res.data.email);
+      });
 
     console.log("Login data:", { email, password });
   };

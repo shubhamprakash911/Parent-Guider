@@ -24,14 +24,17 @@ function Chat({ messages, setMessages }) {
         ...splice_data,
         { role: "user", content: inputText },
       ];
-      const response = await fetch("http://localhost:5000/gpt4", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
-        },
-        body: JSON.stringify({ user_input: chat_history, email }),
-      });
+      const response = await fetch(
+        "https://parent-guider-backend.onrender.com/gpt4",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: localStorage.getItem("token"),
+          },
+          body: JSON.stringify({ user_input: chat_history, email }),
+        }
+      );
       const data = await response.json();
       console.log(chat_history);
       if (data.message) alert(data.message);
