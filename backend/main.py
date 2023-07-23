@@ -27,7 +27,7 @@ def index():
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
-@app.route("/gpt4", methods=["GET", "POST"])
+@app.route("/gpt4", methods=["POST"])
 @authentication
 def gpt4(decoded_code):
 
@@ -148,4 +148,5 @@ def register():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 8080))
+    app.run(host='0.0.0.0', port=port)
